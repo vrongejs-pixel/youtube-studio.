@@ -133,8 +133,8 @@ if run_btn:
       ):
         try:
           genai.configure(api_key=gemini_key)
-          # Использование актуальной модели
-          model = genai.GenerativeModel("gemini-2.5-flash")
+          # Использование актуальной модели gemini-3.8-flash
+          model = genai.GenerativeModel("gemini-3.8-flash")
 
           video_title = "Видео по ссылке (Ancient Mysteries / Lost Civilizations)"
           video_stats_text = (
