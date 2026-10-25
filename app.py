@@ -32,9 +32,7 @@ def save_history(history_list):
 
 # --- БОКОВАЯ ПАНЕЛЬ (НАСТРОЙКИ) ---
 with st.sidebar:
-  st.image(
-      "https://img.icons8.com/color/96/youtube-play.png", width=64
-  )  # Иконка
+  st.image("https://img.icons8.com/color/96/youtube-play.png", width=64)
   st.title("Settings / Настройки")
 
   # Переключатель языка интерфейса
@@ -46,7 +44,6 @@ with st.sidebar:
       "🔑 API Keys" if not is_ru else "🔑 Ключи доступа (API Keys)"
   )
 
-  # Поля для ввода ключей (можно брать из окружения или вводить вручную)
   gemini_key = st.text_input(
       "Gemini API Key",
       value=os.environ.get("GEMINI_API_KEY", ""),
@@ -135,12 +132,9 @@ if run_btn:
           " package..."
       ):
         try:
-          # Настраиваем Gemini
           genai.configure(api_key=gemini_key)
-          # Используем актуальную модель Gemini Pro
           model = genai.GenerativeModel("gemini-2.5-pro")
 
-          # Собираем базовую информацию через YouTube API (если ключ есть)
           video_title = "Видео по ссылке (Ancient Mysteries / Lost Civilizations)"
           video_stats_text = (
               f"Ссылка на оригинал: https://www.youtube.com/watch?v={vid_id}"
@@ -156,7 +150,6 @@ if run_btn:
               channel_title = item["snippet"]["channelTitle"]
               video_stats_text += f"\nНазвание: {video_title}\nКанал: {channel_title}\nПросмотры: {views}"
 
-          # Формируем мощный промпт для экспертного анализа и генерации клона
           prompt = f"""
                     You are an expert YouTube documentary producer, script analyst, visual director, and audience-retention strategist for a channel about "Ancient Mysteries & Lost Civilizations".
                     
@@ -193,7 +186,6 @@ if run_btn:
           response = model.generate_content(prompt)
           result_text = response.text
 
-          # Сохраняем в историю
           new_project = {
               "title": video_title,
               "url": url_input,
@@ -202,7 +194,7 @@ if run_btn:
           }
           history = load_history()
           history.insert(0, new_project)
-          save_history(history[:20])  д  # храним последние 20 проектов
+          save_history(history[:20])
 
           st.success(
               "✅ Анализ и генерация успешно завершены!"
@@ -211,7 +203,6 @@ if run_btn:
           )
           st.markdown(result_text)
 
-          # Кнопка скачивания результата
           st.download_button(
               label=(
                   "📥 Скачать весь пакет (TXT)"
@@ -226,7 +217,6 @@ if run_btn:
         except Exception as e:
             st.error(f"❌ Ошибка при обработке: {e}")
 
-# Отображение выбранного проекта из истории (если ничего не генерировали прямо сейчас)
 elif history and "selected_proj_idx" in locals():
   selected_proj = history[selected_proj_idx]
   st.divider()
